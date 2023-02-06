@@ -4,6 +4,8 @@ namespace Components
 {
     public class ScaleController
     {
+        public bool OvercameMinimumScale { get; private set; }
+        
         private readonly Transform _transform;
         private readonly float _minScale;
 
@@ -19,9 +21,13 @@ namespace Components
             var scale = _transform.localScale;
             scale += Vector3.one * value * Time.deltaTime;
 
+            if (scale.x < _minScale)
+            {
+                scale = Vector3.one * _minScale;
+                OvercameMinimumScale = true;
+            }
+
             _transform.localScale = scale;
-            
-            // check for minScale ?
         }
     }
 }

@@ -1,12 +1,18 @@
 using UnityEngine;
 using Components;
 using Infection;
-using Utils;
+using System;
+using Timer = Utils.Timer;
 
 namespace Projectiles
 {
     public class Projectile : MonoBehaviour
     {
+        public Action OnProjectileMissed { get; set; }
+        public Action OnObstaclesInfected { get; set; }
+
+        public ProjectileData Data => data;
+
         [SerializeField] private ProjectileData data;
         [SerializeField] private Transform modelTransform;
         [SerializeField] private ProjectileAppearance appearance;
@@ -31,7 +37,11 @@ namespace Projectiles
 
         public void Fly(Vector3 direction)
         {
-            _flightTimeout = new Timer(data.FlightTimeout, () => DestroySelf());
+            _flightTimeout = new Timer(data.FlightTimeout, () =>
+            {
+                OnProjectileMissed?.Invoke();
+                DestroySelf();
+            });
             
             appearance.SetFlightAppearance();
             _movement.StartMovement(direction);
@@ -49,6 +59,7 @@ namespace Projectiles
                     infectable.Infect();
             }
             
+            OnObstaclesInfected?.Invoke();
             DestroySelf();
         }
 

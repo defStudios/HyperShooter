@@ -47,6 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 2641aa0c4d60e34489783e4075f4d6c9, type: 2}
   modelTransform: {fileID: 8597802964609115103}
+  obstaclesLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &8597802964609115102
 GameObject:
   m_ObjectHideFlags: 0

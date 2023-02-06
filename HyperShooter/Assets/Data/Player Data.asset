@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b46848ecd47a39c2850fc3249bb8e, type: 3}
   m_Name: Player Data
   m_EditorClassIdentifier: 
-  <MoveSpeed>k__BackingField: 10
-  <MinScale>k__BackingField: 0.1
+  <MoveSpeed>k__BackingField: 5
+  <JumpPower>k__BackingField: 4
+  <JumpLength>k__BackingField: 4
   <InitialScale>k__BackingField: 1
+  <MinScale>k__BackingField: 0.05
   <ScaleDecreaseStep>k__BackingField: 0.35
   <ProjectileSpawnOffset>k__BackingField: {x: 0, y: 0, z: 0.5}
+  <ObstacleOffset>k__BackingField: 1

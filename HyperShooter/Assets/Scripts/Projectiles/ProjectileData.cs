@@ -13,5 +13,6 @@ namespace Projectiles
         [field: SerializeField] public float ScaleIncreaseStep { get; private set; }
         
         [field: SerializeField, Space] public float InfectionRadiusMultiplier { get; private set; }
+        [field: SerializeField] public int InfectionDurationMilliseconds { get; private set; }
     }
 }
