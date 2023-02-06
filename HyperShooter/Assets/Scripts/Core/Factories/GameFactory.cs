@@ -1,6 +1,7 @@
-using Core.Assets;
-using Player;
 using UnityEngine;
+using Core.Assets;
+using Visualizers;
+using Player;
 
 namespace Core.Factories
 {
@@ -15,7 +16,26 @@ namespace Core.Factories
 
         public PlayerController SpawnPlayer(Vector3 position)
         {
-            throw new System.NotImplementedException();
+            var player = _assetsProvider.GetPlayer();
+            player.transform.position = position;
+
+            return player;
+        }
+
+        public Doors SpawnDoors(Vector3 position)
+        {
+            var doors = _assetsProvider.GetDoors();
+            doors.transform.position = position;
+
+            return doors;
+        }
+
+        public Projection SpawnProjection(Vector3 position)
+        {
+            var projection = _assetsProvider.GetProjection();
+            projection.transform.position = position;
+
+            return projection;
         }
     }
 }

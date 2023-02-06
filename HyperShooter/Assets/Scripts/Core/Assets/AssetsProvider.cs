@@ -1,5 +1,6 @@
-using Player;
+using Visualizers;
 using UnityEngine;
+using Player;
 
 namespace Core.Assets
 {
@@ -14,7 +15,17 @@ namespace Core.Assets
 
         public PlayerController GetPlayer()
         {
-            throw new System.NotImplementedException();
+            return Object.Instantiate(_database.Player);
+        }
+
+        public Doors GetDoors()
+        {
+            return Object.Instantiate(_database.Doors);
+        }
+
+        public Projection GetProjection()
+        {
+            return Object.Instantiate(_database.Projection);
         }
     }
 }

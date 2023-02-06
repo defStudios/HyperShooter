@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System;
-using Core.Assets;
-using Core.Factories;
 using Core.Services;
+using Core.Workflow;
+using Core.Assets;
 using Core.Scenes;
 
 namespace Core.States
@@ -12,18 +12,19 @@ namespace Core.States
         private readonly ISceneLoader _sceneLoader;
         private readonly ServiceManager _services;
         
-        private readonly Dictionary<Type, IState> _states;
-        private IState _activeState;
+        private readonly Dictionary<Type, IExitableState> _states;
+        private IExitableState _activeState;
 
-        public StateMachine(ISceneLoader sceneLoader, IAssetsDatabase assetsDatabase, ServiceManager services)
+        public StateMachine(ITickRunner tickRunner, IFixedTickRunner fixedTickRunner, ISceneLoader sceneLoader, 
+            IAssetsDatabase assetsDatabase, ServiceManager services)
         {
             _sceneLoader = sceneLoader;
             _services = services;
             
-            _states = new Dictionary<Type, IState>()
+            _states = new Dictionary<Type, IExitableState>()
             {
-                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, assetsDatabase, services),
-                [typeof(LoadLevelState)] = new LoadLevelState(this,services.Single<IGameFactory>(), services.Single<IAssetsDatabase>(), services),
+                [typeof(BootstrapState)] = new BootstrapState(this, tickRunner, fixedTickRunner, sceneLoader, assetsDatabase, services),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, services),
                 [typeof(GameLoopState)] = new GameLoopState(this),
             };
         }
@@ -32,9 +33,15 @@ namespace Core.States
         {
             var state = ChangeState<TState>();
             state.Enter();
-        }	
+        }
+
+        public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>
+        {
+            var state = ChangeState<TState>();
+            state.Enter(payload);
+        }
         
-        private TState ChangeState<TState>() where TState: class, IState
+        private TState ChangeState<TState>() where TState: class, IExitableState
         {
             _activeState?.Exit();
 			

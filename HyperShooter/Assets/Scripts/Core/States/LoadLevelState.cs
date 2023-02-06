@@ -2,28 +2,33 @@ using Core.Factories;
 using Core.Services;
 using Core.Scenes;
 using Core.Assets;
+using Core.Cameras;
 using UnityEngine;
 
 namespace Core.States
 {
-    public class LoadLevelState : IState
+    public class LoadLevelState : IPayloadedState<LevelData>
     {
         private readonly StateMachine _stateMachine;
         private readonly IGameFactory _gameFactory;
         private readonly IAssetsDatabase _assets;
         private readonly ServiceManager _services;
 
-        public LoadLevelState(StateMachine stateMachine, IGameFactory gameFactory, IAssetsDatabase assets, ServiceManager services)
+        private LevelData _levelData;
+
+        public LoadLevelState(StateMachine stateMachine, ServiceManager services)
         {
             _stateMachine = stateMachine;
-            _gameFactory = gameFactory;
-            _assets = assets;
+            _gameFactory = services.Single<IGameFactory>();
+            _assets = services.Single<IAssetsDatabase>();
             _services = services;
         }
 
-        public void Enter()
+        public void Enter(LevelData levelData)
         {
             // show loading screen
+            
+            _levelData = levelData;
             _services.Single<ISceneLoader>().Load(_assets.LevelSceneName, OnSceneLoaded);
         }
 
@@ -34,8 +39,15 @@ namespace Core.States
 
         private void OnSceneLoaded()
         {
-            // spawn player, doors
-            // set camera
+            var player = _gameFactory.SpawnPlayer(_levelData.PlayerSpawnPosition);
+            var doors = _gameFactory.SpawnDoors(_levelData.DoorsSpawnPosition);
+            var projection = _gameFactory.SpawnProjection(_levelData.ProjectionSpawnPosition);
+            
+            player.Init(doors, _levelData.RequiredDistanceToDoors, projection);
+
+            Camera.main.GetComponent<CameraFollower>()
+                .SetTarget(player.transform, _levelData.CameraOffset, _levelData.CameraEulerRotation);
+            
             // generate obstacles
             
             _stateMachine.Enter<GameLoopState>();

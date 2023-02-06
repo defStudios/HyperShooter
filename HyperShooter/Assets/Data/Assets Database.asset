@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a457c0b0519c2841bffbd1bb3773b03, type: 3}
   m_Name: Assets Database
   m_EditorClassIdentifier: 
-  <Player>k__BackingField: {fileID: 0}
-  <Projectile>k__BackingField: {fileID: 0}
-  <Projection>k__BackingField: {fileID: 0}
+  <Player>k__BackingField: {fileID: 8597802963610198360, guid: f56f4f1decaa0744c988addf2e553110, type: 3}
+  <Projectile>k__BackingField: {fileID: 7933929238569661134, guid: f7ea995f2fbf96e44a5496f3f1554e5b, type: 3}
+  <Projection>k__BackingField: {fileID: 8842044846083980038, guid: 1b81de23e3faa114487cd78d5db84739, type: 3}
   <Obstacle>k__BackingField: {fileID: 0}
-  <Doors>k__BackingField: {fileID: 0}
+  <Doors>k__BackingField: {fileID: 5033634287405157250, guid: 200a32822da6fca4482e6fb49f16652f, type: 3}
   <BootstrapSceneName>k__BackingField: Bootstrap
   <LevelSceneName>k__BackingField: Level
+  <Levels>k__BackingField:
+  - {fileID: 11400000, guid: b6cc6d291e9b8f34596da0f3bf6b0a32, type: 2}

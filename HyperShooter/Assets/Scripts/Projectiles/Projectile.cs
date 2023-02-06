@@ -1,19 +1,30 @@
 using UnityEngine;
+using Components;
 
 namespace Projectiles
 {
     public class Projectile : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        public ScaleController Scale { get; private set; }
         
+        [SerializeField] private ProjectileData data;
+        [SerializeField] private Transform modelTransform;
+        [SerializeField] private ProjectileAppearance appearance;
+
+        private ProjectileMovement _movement;
+        
+        public void Init()
+        {
+            _movement = new ProjectileMovement(transform, data.MoveSpeed);
+            Scale = new ScaleController(modelTransform, data.MinScale);
+            
+            appearance.SetPumpingAppearance();
         }
 
-        // Update is called once per frame
-        void Update()
+        public void Fly(Vector3 direction)
         {
-        
+            appearance.SetFlightAppearance();
+            _movement.StartMovement(direction);
         }
     }
 }

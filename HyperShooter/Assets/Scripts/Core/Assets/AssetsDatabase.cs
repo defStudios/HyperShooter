@@ -19,5 +19,7 @@ namespace Core.Assets
         
         [field: SerializeField, Space] public string BootstrapSceneName { get; private set;}
         [field: SerializeField] public string LevelSceneName { get; private set;}
+        
+        [field: SerializeField, Space] public  LevelData[] Levels { get; private set; }
     }
 }

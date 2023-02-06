@@ -2,9 +2,18 @@ using UnityEngine;
 
 namespace Core.States
 {
-    public interface IState
+    public interface IExitableState
+    {
+        public void Exit();
+    }
+    
+    public interface IState : IExitableState
     {
         public void Enter();
-        public void Exit();
+    }
+
+    public interface IPayloadedState<TPayload> : IExitableState
+    {
+        public void Enter(TPayload payload);
     }
 }

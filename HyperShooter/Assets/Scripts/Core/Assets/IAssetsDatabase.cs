@@ -18,5 +18,7 @@ namespace Core.Assets
         
         public string BootstrapSceneName { get; }
         public string LevelSceneName { get; }
+        
+        public LevelData[] Levels { get; }
     }
 }
