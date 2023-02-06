@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Player Data
   m_EditorClassIdentifier: 
   <MoveSpeed>k__BackingField: 10
-  <MinScale>k__BackingField: 0.2
-  <ScaleDecreaseStep>k__BackingField: 0.02
+  <MinScale>k__BackingField: 0.1
+  <InitialScale>k__BackingField: 1
+  <ScaleDecreaseStep>k__BackingField: 0.35
+  <ProjectileSpawnOffset>k__BackingField: {x: 0, y: 0, z: 0.5}

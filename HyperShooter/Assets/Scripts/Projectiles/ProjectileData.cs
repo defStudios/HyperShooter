@@ -6,8 +6,12 @@ namespace Projectiles
     public class ProjectileData : ScriptableObject
     {
         [field: SerializeField] public float MoveSpeed { get; private set; }
+        [field: SerializeField] public float FlightTimeout { get; private set; }
+        
+        [field: SerializeField, Space] public float InitialScale { get; private set; }
         [field: SerializeField] public float MinScale { get; private set; }
         [field: SerializeField] public float ScaleIncreaseStep { get; private set; }
-        [field: SerializeField] public float InfectionRadiusMultiplier { get; private set; }
+        
+        [field: SerializeField, Space] public float InfectionRadiusMultiplier { get; private set; }
     }
 }

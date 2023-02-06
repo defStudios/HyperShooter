@@ -1,5 +1,6 @@
-using Visualizers;
 using UnityEngine;
+using Visualizers;
+using Projectiles;
 using Player;
 
 namespace Core.Assets
@@ -26,6 +27,11 @@ namespace Core.Assets
         public Projection GetProjection()
         {
             return Object.Instantiate(_database.Projection);
+        }
+
+        public Projectile GetProjectile()
+        {
+            return Object.Instantiate(_database.Projectile);
         }
     }
 }

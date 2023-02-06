@@ -23,7 +23,12 @@ namespace Player
 
         public void Tick(float deltaTime)
         {
-            //throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
+        }
+
+        public void OnDestroy()
+        {
+            ServiceManager.Container.Single<ITickRunner>().Unsubscribe(this);
         }
 
         public void MoveTowardsDoors()

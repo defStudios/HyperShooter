@@ -2,6 +2,8 @@ using Core.Services;
 using UnityEngine;
 using Core.Input;
 using Components;
+using Core.Factories;
+using Projectiles;
 using Visualizers;
 
 namespace Player
@@ -15,10 +17,12 @@ namespace Player
         private ScaleController _scale;
         private Projection _projection;
 
+        private Projectile _projectile;
+
         public void Init(Doors doors, float requiredDistanceToDoors, Projection projection)
         {
             _movement = new PlayerMovement(transform, doors, data.MoveSpeed, requiredDistanceToDoors);
-            _scale = new ScaleController(modelTransform, data.MinScale);
+            _scale = new ScaleController(modelTransform, data.MinScale, data.InitialScale);
             _projection = projection;
             
             _projection.SetProjection(modelTransform, doors.transform);
@@ -30,26 +34,32 @@ namespace Player
 
         private void OnTapBegun()
         {
-            // create projectile
-            // set state to pumping
+            var spawnPos = transform.position + data.ProjectileSpawnOffset;
+            _projectile = ServiceManager.Container.Single<IGameFactory>().SpawnProjectile(spawnPos);
+            _projectile.Init();
             
-            throw new System.NotImplementedException();
+            // set state to pumping
+            //throw new System.NotImplementedException();
         }
 
         private void OnTapping()
         {
-            // update scale
+            _scale.MakeScaleStep(-data.ScaleDecreaseStep);
+            _projectile.MakeScaleStep();
+            
             _projection.UpdateProjection();
             
-            throw new System.NotImplementedException();
+            // check if player is alive
+            
+            //throw new System.NotImplementedException();
         }
 
         private void OnTapEnded()
         {
-            // launch projectile
+            _projectile.Fly(transform.forward);
             // disable inputs
             
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
     }
 }

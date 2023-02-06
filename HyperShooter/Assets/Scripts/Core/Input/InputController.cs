@@ -40,6 +40,11 @@ namespace Core.Input
             }
         }
 
+        public void OnDestroy()
+        {
+            ServiceManager.Container.Single<ITickRunner>().Unsubscribe(this);
+        }
+
         public void StartListening()
         {
             _listening = true;

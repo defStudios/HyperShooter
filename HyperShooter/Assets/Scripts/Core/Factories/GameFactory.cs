@@ -2,6 +2,7 @@ using UnityEngine;
 using Core.Assets;
 using Visualizers;
 using Player;
+using Projectiles;
 
 namespace Core.Factories
 {
@@ -36,6 +37,14 @@ namespace Core.Factories
             projection.transform.position = position;
 
             return projection;
+        }
+
+        public Projectile SpawnProjectile(Vector3 position)
+        {
+            var projectile = _assetsProvider.GetProjectile();
+            projectile.transform.position = position;
+
+            return projectile;
         }
     }
 }

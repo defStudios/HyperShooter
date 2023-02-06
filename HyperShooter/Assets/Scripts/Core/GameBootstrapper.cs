@@ -38,10 +38,16 @@ namespace Core
                 _tickables.Add(tickable);
         }
 
+        public void Unsubscribe(ITickable tickable) =>
+            _tickables.Remove(tickable);
+
         public void Subscribe(IFixedTickable fixedTickable)
         {
             if (!_fixedTickables.Contains(fixedTickable))
                 _fixedTickables.Add(fixedTickable);
         }
+
+        public void Unsubscribe(IFixedTickable fixedTickable) =>
+            _fixedTickables.Remove(fixedTickable);
     }
 }

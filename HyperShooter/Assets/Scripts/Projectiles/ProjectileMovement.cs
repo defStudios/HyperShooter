@@ -9,6 +9,9 @@ namespace Projectiles
         private readonly Transform _transform;
         private readonly float _moveSpeed;
 
+        private bool _moving;
+        private Vector3 _direction;
+
         public ProjectileMovement(Transform transform, float moveSpeed)
         {
             _transform = transform;
@@ -17,14 +20,23 @@ namespace Projectiles
             ServiceManager.Container.Single<ITickRunner>().Subscribe(this);
         }
 
+        public void OnDestroy()
+        {
+            ServiceManager.Container.Single<ITickRunner>().Unsubscribe(this);
+        }
+
         public void Tick(float deltaTime)
         {
-            throw new System.NotImplementedException();
+            if (!_moving)
+                return;
+            
+            _transform.Translate(_direction * (_moveSpeed * Time.deltaTime));
         }
 
         public void StartMovement(Vector3 direction)
         {
-            
+            _moving = true;
+            _direction = direction;
         }
     }
 }

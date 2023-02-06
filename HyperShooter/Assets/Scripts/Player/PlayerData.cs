@@ -7,6 +7,8 @@ namespace Player
     {
         [field: SerializeField] public float MoveSpeed { get; private set; }
         [field: SerializeField] public float MinScale { get; private set; }
+        [field: SerializeField] public float InitialScale { get; private set; }
         [field: SerializeField] public float ScaleDecreaseStep { get; private set; }
+        [field: SerializeField] public Vector3 ProjectileSpawnOffset { get; private set; }
     }
 }

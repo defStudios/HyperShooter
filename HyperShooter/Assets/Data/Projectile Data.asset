@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Projectile Data
   m_EditorClassIdentifier: 
   <MoveSpeed>k__BackingField: 20
+  <FlightTimeout>k__BackingField: 3
+  <InitialScale>k__BackingField: 0.1
   <MinScale>k__BackingField: 0.1
-  <ScaleIncreaseStep>k__BackingField: 0.02
+  <ScaleIncreaseStep>k__BackingField: 0.35
   <InfectionRadiusMultiplier>k__BackingField: 2

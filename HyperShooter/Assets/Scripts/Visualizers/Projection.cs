@@ -33,7 +33,7 @@ namespace Visualizers
             float zScale = direction.z;
 
             meshTransform.localScale = new Vector3(xScale, meshTransform.localScale.y, zScale);
-            _transform.position = new Vector3(direction.x, _transform.position.y, _origin.position.z + direction.z / 2);
+            _transform.position = new Vector3(originPos.x, _transform.position.y, originPos.z + direction.z / 2);
         }
     }
 }
