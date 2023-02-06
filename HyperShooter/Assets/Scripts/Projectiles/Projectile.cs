@@ -28,6 +28,7 @@ namespace Projectiles
             _scale = new ScaleController(modelTransform, data.MinScale, data.InitialScale);
             
             collision.OnHitInfectable += OnHitInfectable;
+            collision.OnHitDoors += (position) => ProjectileMissed();
             
             appearance.SetPumpingAppearance();
         }
@@ -37,16 +38,18 @@ namespace Projectiles
 
         public void Fly(Vector3 direction)
         {
-            _flightTimeout = new Timer(data.FlightTimeout, () =>
-            {
-                OnProjectileMissed?.Invoke();
-                DestroySelf();
-            });
+            _flightTimeout = new Timer(data.FlightTimeout, ProjectileMissed);
             
             appearance.SetFlightAppearance();
             _movement.StartMovement(direction);
         }
 
+        private void ProjectileMissed()
+        {
+            OnProjectileMissed?.Invoke();
+            DestroySelf();
+        }
+        
         private void OnHitInfectable(Vector3 position)
         {
             float radius = modelTransform.localScale.x * data.InfectionRadiusMultiplier;

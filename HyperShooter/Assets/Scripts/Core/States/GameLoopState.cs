@@ -3,16 +3,17 @@ using Core.Services;
 using Projectiles;
 using Core.Assets;
 using Core.Input;
+using Level;
 using Player;
 using UnityEngine;
 
 namespace Core.States
 {
-    public class GameLoopState : IPayloadedState<PlayerController>
+    public class GameLoopState : IPayloadedState<LevelController>
     {
         private readonly StateMachine _stateMachine;
 
-        private PlayerController _player;
+        private LevelController _level;
         private Projectile _projectile;
 
         public GameLoopState(StateMachine stateMachine)
@@ -20,20 +21,17 @@ namespace Core.States
             _stateMachine = stateMachine;
         }
 
-        public void Enter(PlayerController player)
+        public void Enter(LevelController level)
         {
-            _player = player;
+            _level = level;
 
-            SubscribeOnPlayerEvents(_player);
+            SubscribeOnPlayerEvents(level.Player);
             StartPlayerTurn();
         }
         
         public void Exit()
         {
-            // hide popups
-
-            UnsubscribeFromPlayerEvents();
-            ServiceManager.Container.Single<IInput>().StopListening();
+            UnsubscribeFromPlayerEvents(_level.Player);
         }
 
         private void StartPlayerTurn()
@@ -52,49 +50,62 @@ namespace Core.States
 
         private async void OnObstaclesInfected()
         {
-            await Task.Delay(_projectile.Data.InfectionDurationMilliseconds + 100);
-            StartPlayerMovementStage();
-        }
-
-        private void OnProjectileMissed() => StartPlayerMovementStage();
-
-        private void StartPlayerMovementStage()
-        {
-            _player.StartMovementStage();
-        }
-
-        private void OnPlayerOvercameMinimumScale()
-        {
-            // show lose popup
-            Debug.Log("You are too small!");
-            ReloadLevel();
+            await Task.Delay(_projectile.Data.InfectionDurationMilliseconds + 
+                             _projectile.Data.InfectionPostDurationMilliseconds);
             
+            TryStartPlayerMovementStage();
+        }
+
+        private async void OnProjectileMissed()
+        {
+            await Task.Delay(_projectile.Data.ProjectileMissTimeoutMilliseconds);
+            TryStartPlayerMovementStage();
+        }
+
+        private void TryStartPlayerMovementStage()
+        {
+            if (_level.Player.Scale.OvercameMinimumScale)
+            {
+                ShowResult(false);
+                return;
+            }
+
+            _level.Player.Movement.MoveTowardsDoors();
         }
 
         private async void OnPlayerMovementDone(bool reachedDoors)
         {
-            Debug.Log("Movement done!");
-            // if player is close, show win popup
-            // else StartPlayerTurn();
+            if (reachedDoors)
+            {
+                await _level.Doors.Open();
+                ShowResult(true);
+            }
+            else
+                StartPlayerTurn();
+        }
+
+        private void ShowResult(bool win)
+        {
+            Debug.Log(win ? "Congratulations!" : "You are too small!");
+            ReloadLevel();
         }
         
         private void ReloadLevel()
         {
-            _stateMachine.Enter<LoadLevelState, LevelData>(ServiceManager.Container.Single<IAssetsDatabase>().Levels[0]);
+            _stateMachine.Enter<LoadLevelState, LevelData>(
+                ServiceManager.Container.Single<IAssetsDatabase>().Levels[0]);
         }
 
         private void SubscribeOnPlayerEvents(PlayerController player)
         {
             player.OnProjectileLaunched += OnProjectileLaunched;
-            player.OnPlayerOvercameMinimumScale += OnPlayerOvercameMinimumScale;
-            player.OnMovementDone += OnPlayerMovementDone;
+            player.Movement.OnMovementDone += OnPlayerMovementDone;
         }
 
-        private void UnsubscribeFromPlayerEvents()
+        private void UnsubscribeFromPlayerEvents(PlayerController player)
         {
-            _player.OnProjectileLaunched -= OnProjectileLaunched;
-            _player.OnPlayerOvercameMinimumScale -= OnPlayerOvercameMinimumScale;
-            _player.OnMovementDone -= OnPlayerMovementDone;
+            player.OnProjectileLaunched -= OnProjectileLaunched;
+            player.Movement.OnMovementDone -= OnPlayerMovementDone;
         }
     }
 }

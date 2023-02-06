@@ -15,21 +15,18 @@ namespace Player
         {
             Idle,
             Pumping,
-            Moving
         }
         
         public Action<Projectile> OnProjectileLaunched { get; set; }
-        public Action OnPlayerOvercameMinimumScale { get; set; }
-        public Action<bool> OnMovementDone { get; set; }
+
+        public PlayerMovement Movement { get; private set; }
+        public ScaleController Scale { get; private set; }
         
         [SerializeField] private PlayerData data;
         [SerializeField] private Transform modelTransform;
         [SerializeField] private LayerMask obstaclesLayerMask;
 
-        private PlayerMovement _movement;
-        private ScaleController _scale;
         private Projection _projection;
-
         private Projectile _projectile;
 
         private Status _status;
@@ -38,11 +35,10 @@ namespace Player
         {
             _status = Status.Idle;
             
-            _movement = new PlayerMovement(modelTransform, doors, data.MoveSpeed,  
+            Movement = new PlayerMovement(modelTransform, doors, data.MoveSpeed,  
                 data.JumpPower, data.JumpLength, data.ObstacleOffset, requiredDistanceToDoors, obstaclesLayerMask);
-            _movement.OnMovementDone += MovementDone;
             
-            _scale = new ScaleController(modelTransform, data.MinScale, data.InitialScale);
+            Scale = new ScaleController(modelTransform, data.MinScale, data.InitialScale);
             
             _projection = projection;
             _projection.SetProjection(modelTransform, doors.transform);
@@ -54,29 +50,11 @@ namespace Player
 
         private void OnDestroy()
         {
-            _movement.OnDestroy();
+            Movement.OnDestroy();
             
             ServiceManager.Container.Single<IInput>().OnTapBegun -= OnTapBegun;
             ServiceManager.Container.Single<IInput>().OnTapping -= OnTapping;
             ServiceManager.Container.Single<IInput>().OnTapEnded -= OnTapEnded;
-        }
-
-        public void StartMovementStage()
-        {
-            if (_scale.OvercameMinimumScale)
-            {
-                OnPlayerOvercameMinimumScale?.Invoke();
-                return;
-            }
-
-            _status = Status.Moving;
-            _movement.MoveTowardsDoors();
-        }
-       
-        private void MovementDone(bool reachedDoors)
-        {
-            _status = Status.Idle;
-            OnMovementDone?.Invoke(reachedDoors);
         }
 
         private void OnTapBegun()
@@ -90,12 +68,12 @@ namespace Player
 
         private void OnTapping()
         {
-            _scale.MakeScaleStep(-data.ScaleDecreaseStep);
+            Scale.MakeScaleStep(-data.ScaleDecreaseStep);
             _projectile.MakeScaleStep();
             
             _projection.UpdateProjection();
             
-            if (_scale.OvercameMinimumScale)
+            if (Scale.OvercameMinimumScale)
                 ThrowProjectile();
         }
 

@@ -1,6 +1,7 @@
 using Core.Services;
 using Core.Workflow;
 using UnityEngine;
+using Visualizers;
 using System;
 
 namespace Player
@@ -45,7 +46,12 @@ namespace Player
 
             Vector3 direction = _endPoint - _transform.position;
             float distance = direction.magnitude;
-
+            
+            if (distance > .1f)
+                _transform.position += direction * (_moveSpeed * Time.deltaTime);
+            else
+                MovementDone();
+            /*
             if (distance > _targetPositionOffset * 2)
             {
                 var pos = _transform.position +
@@ -61,6 +67,7 @@ namespace Player
                 else
                     MovementDone();
             }
+            */
         }
 
         public void OnDestroy()
@@ -79,9 +86,6 @@ namespace Player
             _moving = false;
             
             bool reachedDoors = (_doors.transform.position - _transform.position).magnitude < _requiredDistanceToDoors;
-            if (reachedDoors)
-                _doors.Open();
-            
             OnMovementDone?.Invoke(reachedDoors);
         }
 

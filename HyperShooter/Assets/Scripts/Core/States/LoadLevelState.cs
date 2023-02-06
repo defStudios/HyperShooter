@@ -3,6 +3,7 @@ using Core.Services;
 using Core.Cameras;
 using Core.Scenes;
 using Core.Assets;
+using Level;
 using UnityEngine;
 using Player;
 using Visualizers;
@@ -17,10 +18,7 @@ namespace Core.States
         private readonly ServiceManager _services;
 
         private LevelData _levelData;
-
-        private PlayerController _player;
-        private Doors _doors;
-        private Projection _projection;
+        private LevelController _levelController;
 
         public LoadLevelState(StateMachine stateMachine, ServiceManager services)
         {
@@ -32,38 +30,20 @@ namespace Core.States
 
         public void Enter(LevelData levelData)
         {
-            // show loading screen
-            
             _levelData = levelData;
             _services.Single<ISceneLoader>().Load(_assets.LevelSceneName, OnSceneLoaded);
         }
 
-        public void Exit()
-        {
-            // hide loading screen
-        }
+        public void Exit() { }
 
         private void OnSceneLoaded()
         {
-            if (_player != null)
-                Object.Destroy(_player.gameObject);
-            if (_doors != null)
-                Object.Destroy(_doors.gameObject);
-            if (_projection != null)
-                Object.Destroy(_projection.gameObject);
+            _levelController?.CleanUp();
             
-            _player = _gameFactory.SpawnPlayer(_levelData.PlayerSpawnPosition);
-            _doors = _gameFactory.SpawnDoors(_levelData.DoorsSpawnPosition);
-            _projection = _gameFactory.SpawnProjection(_levelData.ProjectionSpawnPosition);
+            _levelController = new LevelController(_gameFactory, _levelData);
+            _levelController.LoadLevel();
             
-            _player.Init(_doors, _levelData.RequiredDistanceToDoors, _projection);
-
-            Camera.main.GetComponent<CameraFollower>()
-                .SetTarget(_player.transform, _levelData.CameraOffset, _levelData.CameraEulerRotation);
-            
-            // generate obstacles
-            
-            _stateMachine.Enter<GameLoopState, PlayerController>(_player);
+            _stateMachine.Enter<GameLoopState, LevelController>(_levelController);
         }
     }
 }

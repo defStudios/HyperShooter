@@ -1,27 +1,17 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class Doors : MonoBehaviour
+namespace Visualizers
 {
-    [SerializeField] private Transform leftDoor;
-    [SerializeField] private Transform rightDoor;
-
-    [SerializeField] private float leftDoorOpeningAngle;
-    [SerializeField] private float rightDoorOpeningAngle;
-    
-    [SerializeField] private float openingDuration;
-
-    private bool _openingDoors;
-    
-    private void Update()
+    public class Doors : MonoBehaviour
     {
-        if (!_openingDoors)
-            return;
-        
-        leftDoor.rotation = Quaternion.Lerp(leftDoor.rotation, Quaternion.Euler(Vector3.up * leftDoorOpeningAngle), Time.deltaTime / openingDuration);
-    }
+        [SerializeField] private SmoothRotation leftDoor;
+        [SerializeField] private SmoothRotation rightDoor;
     
-    public void Open()
-    {
-        _openingDoors = true;
+        public async Task Open()
+        {
+            rightDoor.Rotate();
+            await leftDoor.Rotate();
+        }
     }
 }
