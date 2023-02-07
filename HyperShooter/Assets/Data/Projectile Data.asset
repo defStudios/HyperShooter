@@ -17,7 +17,7 @@ MonoBehaviour:
   <InitialScale>k__BackingField: 0.05
   <MinScale>k__BackingField: 0.05
   <ScaleIncreaseStep>k__BackingField: 0.35
-  <InfectionRadiusMultiplier>k__BackingField: 2
+  <InfectionRadiusMultiplier>k__BackingField: 1.5
   infectionDuration: 1
   infectionPostDuration: 0.5
   projectileMissTimeout: 1

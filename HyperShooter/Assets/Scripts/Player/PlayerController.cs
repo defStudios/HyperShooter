@@ -37,7 +37,9 @@ namespace Player
             
             Movement = new PlayerMovement(transform, modelTransform, doors, 
                 data.MoveSpeed, data.JumpPower, data.JumpLength, 
-                data.ObstacleOffset, requiredDistanceToDoors, obstaclesLayerMask);
+                data.ObstacleOffset, requiredDistanceToDoors, 
+                data.BouncingMinDistanceToTarget, data.MovementMinDistanceToTarget,
+                obstaclesLayerMask);
             
             Scale = new ScaleController(modelTransform, data.MinScale, data.InitialScale);
             

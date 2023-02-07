@@ -17,6 +17,7 @@ namespace Projectiles
         [SerializeField] private Transform modelTransform;
         [SerializeField] private ProjectileAppearance appearance;
         [SerializeField] private ProjectileCollision collision;
+        [SerializeField] private Rigidbody rb;
         
         private ProjectileMovement _movement;
         private ScaleController _scale;
@@ -24,7 +25,7 @@ namespace Projectiles
         
         public void Init()
         {
-            _movement = new ProjectileMovement(transform, data.MoveSpeed);
+            _movement = new ProjectileMovement(rb, data.MoveSpeed);
             _scale = new ScaleController(modelTransform, data.MinScale, data.InitialScale);
 
             collision.DisableDetection();

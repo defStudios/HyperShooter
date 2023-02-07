@@ -19,15 +19,20 @@ namespace Player
         private readonly float _jumpPower;
         private readonly float _targetPositionOffset;
         private readonly float _requiredDistanceToDoors;
+        private readonly float _bouncingMinDistanceToTarget;
+        private readonly float _moveMinDistanceToTarget;
         private readonly LayerMask _layerMask;
 
         private bool _moving;
         private float _jumpsAmount;
+        private float _movementTime;
         private Vector3 _endPoint;
 
         public PlayerMovement(Transform transform, Transform mesh, Doors doors, 
             float moveSpeed, float jumpPower, float jumpLength,
-            float targetPositionOffset, float requiredDistanceToDoors, LayerMask layerMask)
+            float targetPositionOffset, float requiredDistanceToDoors, 
+            float bouncingMinDistanceToTarget, float moveMinDistanceToTarget,
+            LayerMask layerMask)
         {
             _transform = transform;
             _mesh = mesh;
@@ -37,6 +42,8 @@ namespace Player
             _jumpPower = jumpPower;
             _targetPositionOffset = targetPositionOffset;
             _requiredDistanceToDoors = requiredDistanceToDoors;
+            _bouncingMinDistanceToTarget = bouncingMinDistanceToTarget;
+            _moveMinDistanceToTarget = moveMinDistanceToTarget;
             _layerMask = layerMask;
 
             ServiceManager.Container.Single<ITickRunner>().Subscribe(this);
@@ -49,28 +56,24 @@ namespace Player
 
             Vector3 direction = _endPoint - _transform.position;
             float distance = direction.magnitude;
-            
-            if (distance > .1f)
-                _transform.position += direction.normalized * (_moveSpeed * Time.deltaTime);
-            else
-                MovementDone();
-            /*
-            if (distance > _targetPositionOffset * 2)
-            {
-                var pos = _transform.position +
-                          (Vector3.up * (Mathf.Sin(Time.time * _jumpPower) * _jumpLength * Time.deltaTime));
 
-                pos += _transform.forward * (_moveSpeed * Time.deltaTime);
+            if (distance > _bouncingMinDistanceToTarget)
+            {
+                var pos = _transform.position;
+                pos.y += Mathf.Sin(_movementTime * _jumpPower) * _jumpLength * Time.deltaTime;
+                pos.z += _moveSpeed * Time.deltaTime;
+                
                 _transform.position = pos;
             }
             else
             {
-                if (distance > .1f)
-                    _transform.position += direction * (_moveSpeed * Time.deltaTime);
+                if (distance > _moveMinDistanceToTarget)
+                    _transform.position += direction.normalized * (_moveSpeed * Time.deltaTime);
                 else
                     MovementDone();
             }
-            */
+
+            _movementTime += Time.deltaTime;
         }
 
         public void OnDestroy()
@@ -87,6 +90,7 @@ namespace Player
         {
             _endPoint = GetEndPoint();
             _moving = true;
+            _movementTime = 0;
         }
 
         private void MovementDone()

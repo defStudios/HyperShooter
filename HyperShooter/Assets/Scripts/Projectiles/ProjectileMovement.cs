@@ -4,33 +4,33 @@ using UnityEngine;
 
 namespace Projectiles
 {
-    public class ProjectileMovement : ITickable
+    public class ProjectileMovement : IFixedTickable
     {
-        private readonly Transform _transform;
+        private readonly Rigidbody _rigidbody;
         private readonly float _moveSpeed;
 
         private bool _moving;
         private Vector3 _direction;
 
-        public ProjectileMovement(Transform transform, float moveSpeed)
+        public ProjectileMovement(Rigidbody rigidbody, float moveSpeed)
         {
-            _transform = transform;
+            _rigidbody = rigidbody;
             _moveSpeed = moveSpeed;
             
-            ServiceManager.Container.Single<ITickRunner>().Subscribe(this);
+            ServiceManager.Container.Single<IFixedTickRunner>().Subscribe(this);
+        }
+
+        public void FixedTick(float deltaTime)
+        {
+            if (!_moving)
+                return;
+
+            _rigidbody.velocity = _direction * _moveSpeed;
         }
 
         public void OnDestroy()
         {
-            ServiceManager.Container.Single<ITickRunner>().Unsubscribe(this);
-        }
-
-        public void Tick(float deltaTime)
-        {
-            if (!_moving)
-                return;
-            
-            _transform.Translate(_direction * (_moveSpeed * Time.deltaTime));
+            ServiceManager.Container.Single<IFixedTickRunner>().Unsubscribe(this);
         }
 
         public void StartMovement(Vector3 direction)

@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Player Data
   m_EditorClassIdentifier: 
   <MoveSpeed>k__BackingField: 5
-  <JumpPower>k__BackingField: 4
-  <JumpLength>k__BackingField: 4
+  <JumpPower>k__BackingField: 10
+  <JumpLength>k__BackingField: 3
+  <BouncingMinDistanceToTarget>k__BackingField: 0.75
+  <MovementMinDistanceToTarget>k__BackingField: 0.1
   <InitialScale>k__BackingField: 1
   <MinScale>k__BackingField: 0.05
   <ScaleDecreaseStep>k__BackingField: 0.35
