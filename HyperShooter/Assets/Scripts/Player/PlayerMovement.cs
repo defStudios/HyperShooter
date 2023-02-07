@@ -11,6 +11,7 @@ namespace Player
         public Action<bool> OnMovementDone { get; set; }
         
         private readonly Transform _transform;
+        private readonly Transform _mesh;
         private readonly Doors _doors;
         
         private readonly float _moveSpeed;
@@ -24,10 +25,12 @@ namespace Player
         private float _jumpsAmount;
         private Vector3 _endPoint;
 
-        public PlayerMovement(Transform transform, Doors doors, float moveSpeed, float jumpPower, float jumpLength,
+        public PlayerMovement(Transform transform, Transform mesh, Doors doors, 
+            float moveSpeed, float jumpPower, float jumpLength,
             float targetPositionOffset, float requiredDistanceToDoors, LayerMask layerMask)
         {
             _transform = transform;
+            _mesh = mesh;
             _doors = doors;
             _moveSpeed = moveSpeed;
             _jumpLength = jumpLength;
@@ -91,7 +94,7 @@ namespace Player
 
         private Vector3 GetEndPoint()
         {
-            bool hasObstacle = Physics.SphereCast(_transform.position, _transform.localScale.x, _transform.forward, out var hit, 100, _layerMask);
+            bool hasObstacle = Physics.SphereCast(_transform.position, _mesh.localScale.x, _transform.forward, out var hit, 100, _layerMask);
             var pos = hasObstacle ? hit.point : _doors.transform.position;
 
             pos += (_transform.position - pos).normalized * _targetPositionOffset;
