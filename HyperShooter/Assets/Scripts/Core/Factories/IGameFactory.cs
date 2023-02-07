@@ -3,6 +3,7 @@ using Obstacles;
 using UnityEngine;
 using Player;
 using Projectiles;
+using UI;
 using Visualizers;
 
 namespace Core.Factories
@@ -14,5 +15,8 @@ namespace Core.Factories
         public Projection SpawnProjection(Vector3 position);
         public Projectile SpawnProjectile(Vector3 position);
         public Obstacle SpawnObstacle(Vector3 position);
+
+        public Popup CreateWinPopup();
+        public Popup CreateLosePopup();
     }
 }

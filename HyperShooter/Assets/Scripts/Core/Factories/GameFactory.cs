@@ -4,6 +4,7 @@ using Obstacles;
 using Visualizers;
 using Player;
 using Projectiles;
+using UI;
 
 namespace Core.Factories
 {
@@ -55,5 +56,8 @@ namespace Core.Factories
 
             return obstacle;
         }
+
+        public Popup CreateWinPopup() => _assetsProvider.GetWinPopup();
+        public Popup CreateLosePopup() => _assetsProvider.GetLosePopup();
     }
 }

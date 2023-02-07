@@ -3,6 +3,7 @@ using Visualizers;
 using Projectiles;
 using Obstacles;
 using Player;
+using UI;
 
 namespace Core.Assets
 {
@@ -17,8 +18,11 @@ namespace Core.Assets
 
         [field: SerializeField, Space] public Doors Doors { get; private set; }
         
-        [field: SerializeField, Space] public string BootstrapSceneName { get; private set;}
-        [field: SerializeField] public string LevelSceneName { get; private set;}
+        [field: SerializeField, Space] public Popup WinPopup { get; private set; }
+        [field: SerializeField] public Popup LosePopup { get; private set; }
+        
+        [field: SerializeField, Space] public string BootstrapSceneName { get; private set; }
+        [field: SerializeField] public string LevelSceneName { get; private set; }
         
         [field: SerializeField, Space] public  LevelData[] Levels { get; private set; }
     }

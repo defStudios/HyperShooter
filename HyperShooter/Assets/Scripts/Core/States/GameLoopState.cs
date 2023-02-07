@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Core.Services;
 using Projectiles;
 using Core.Assets;
+using Core.Factories;
 using Core.Input;
 using Level;
 using Player;
@@ -86,8 +87,10 @@ namespace Core.States
 
         private void ShowResult(bool win)
         {
-            Debug.Log(win ? "Congratulations!" : "You are too small!");
-            ReloadLevel();
+            if (win)
+                ServiceManager.Container.Single<IGameFactory>().CreateWinPopup().Show(ReloadLevel);
+            else
+                ServiceManager.Container.Single<IGameFactory>().CreateLosePopup().Show(ReloadLevel);
         }
         
         private void ReloadLevel()

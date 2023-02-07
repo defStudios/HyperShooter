@@ -3,6 +3,7 @@ using Projectiles;
 using Visualizers;
 using Obstacles;
 using Player;
+using UI;
 
 namespace Core.Assets
 {
@@ -15,6 +16,9 @@ namespace Core.Assets
         public Obstacle Obstacle { get; }
 
         public Doors Doors { get; }
+        
+        public Popup WinPopup { get; }
+        public Popup LosePopup { get; }
         
         public string BootstrapSceneName { get; }
         public string LevelSceneName { get; }
