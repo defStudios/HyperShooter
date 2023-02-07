@@ -18,5 +18,5 @@ MonoBehaviour:
   <InitialScale>k__BackingField: 1
   <MinScale>k__BackingField: 0.05
   <ScaleDecreaseStep>k__BackingField: 0.35
-  <ProjectileSpawnOffset>k__BackingField: {x: 0, y: 0, z: 0.5}
+  <ProjectileSpawnOffset>k__BackingField: {x: 0, y: 0, z: 1}
   <ObstacleOffset>k__BackingField: 1

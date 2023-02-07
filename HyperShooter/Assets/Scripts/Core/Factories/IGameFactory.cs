@@ -1,4 +1,5 @@
 using Core.Services;
+using Obstacles;
 using UnityEngine;
 using Player;
 using Projectiles;
@@ -12,5 +13,6 @@ namespace Core.Factories
         public Doors SpawnDoors(Vector3 position);
         public Projection SpawnProjection(Vector3 position);
         public Projectile SpawnProjectile(Vector3 position);
+        public Obstacle SpawnObstacle(Vector3 position);
     }
 }

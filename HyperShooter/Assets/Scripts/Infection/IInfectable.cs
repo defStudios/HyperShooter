@@ -2,6 +2,6 @@ namespace Infection
 {
     public interface IInfectable
     {
-        public void Infect();
+        public void Infect(int durationMilliseconds);
     }
 }

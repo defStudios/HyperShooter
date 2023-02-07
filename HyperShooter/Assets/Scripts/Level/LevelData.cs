@@ -10,6 +10,10 @@ public class LevelData : ScriptableObject
     public Vector3 CameraOffset => cameraOffset;
     public Vector3 CameraEulerRotation => cameraEulerRotation;
 
+    public Vector3 SpawnAreaPoint => spawnAreaPoint;
+    public float SpawnAreaRadius => spawnAreaRadius;
+    public int ObstaclesAmount => obstaclesAmount;
+
     public float RequiredDistanceToDoors => requiredDistanceToDoors;
     
     [Header("Spawn")]
@@ -21,6 +25,11 @@ public class LevelData : ScriptableObject
     [SerializeField] private Vector3 cameraOffset;
     [SerializeField] private Vector3 cameraEulerRotation;
 
+    [Header("Obstacles")] 
+    [SerializeField] private Vector3 spawnAreaPoint;
+    [SerializeField] private float spawnAreaRadius;
+    [SerializeField] private int obstaclesAmount;
+    
     [Header("Game Balance")] 
     [SerializeField] private float requiredDistanceToDoors;
 }

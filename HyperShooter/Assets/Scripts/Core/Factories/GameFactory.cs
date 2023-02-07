@@ -1,5 +1,6 @@
 using UnityEngine;
 using Core.Assets;
+using Obstacles;
 using Visualizers;
 using Player;
 using Projectiles;
@@ -45,6 +46,14 @@ namespace Core.Factories
             projectile.transform.position = position;
 
             return projectile;
+        }
+
+        public Obstacle SpawnObstacle(Vector3 position)
+        {
+            var obstacle = _assetsProvider.GetObstacle();
+            obstacle.transform.position = position;
+
+            return obstacle;
         }
     }
 }

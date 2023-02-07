@@ -72,6 +72,7 @@ namespace Player
             Scale.MakeScaleStep(-data.ScaleDecreaseStep);
             _projectile.MakeScaleStep();
             
+            Movement.UpdatePumpingPosition(-data.ScaleDecreaseStep);
             _projection.UpdateProjection();
             
             if (Scale.OvercameMinimumScale)

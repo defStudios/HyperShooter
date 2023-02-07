@@ -15,6 +15,7 @@ namespace Level
         public PlayerController Player { get; private set; }
         public Doors Doors { get; private set; }
         public Projection Projection { get; private set; }
+        public ObstaclesGenerator ObstaclesGenerator { get; private set; }
 
         public LevelController(IGameFactory gameFactory, LevelData data)
         {
@@ -32,8 +33,9 @@ namespace Level
             
             Camera.main.GetComponent<CameraFollower>()
                 .SetTarget(Player.transform, Data.CameraOffset, Data.CameraEulerRotation);
-            
-            // generate obstacles
+
+            ObstaclesGenerator = new ObstaclesGenerator(_gameFactory);
+            ObstaclesGenerator.GenerateObstacles(Data.SpawnAreaPoint, Data.SpawnAreaRadius, Data.ObstaclesAmount);
         }
 
         public void CleanUp()
@@ -41,6 +43,7 @@ namespace Level
             Object.Destroy(Player.gameObject);
             Object.Destroy(Doors.gameObject);
             Object.Destroy(Projection.gameObject);
+            ObstaclesGenerator.DestroyObstacles();
         }
     }
 }

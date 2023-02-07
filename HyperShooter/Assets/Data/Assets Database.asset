@@ -15,7 +15,7 @@ MonoBehaviour:
   <Player>k__BackingField: {fileID: 8597802963610198360, guid: f56f4f1decaa0744c988addf2e553110, type: 3}
   <Projectile>k__BackingField: {fileID: 7933929238569661134, guid: f7ea995f2fbf96e44a5496f3f1554e5b, type: 3}
   <Projection>k__BackingField: {fileID: 8842044846083980038, guid: 1b81de23e3faa114487cd78d5db84739, type: 3}
-  <Obstacle>k__BackingField: {fileID: 0}
+  <Obstacle>k__BackingField: {fileID: 2868982281686882313, guid: ed7bd40f981054ab18dd947740009883, type: 3}
   <Doors>k__BackingField: {fileID: 5033634287405157250, guid: 200a32822da6fca4482e6fb49f16652f, type: 3}
   <BootstrapSceneName>k__BackingField: Bootstrap
   <LevelSceneName>k__BackingField: Level

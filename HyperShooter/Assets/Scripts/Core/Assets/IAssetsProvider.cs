@@ -1,4 +1,5 @@
 using Core.Services;
+using Obstacles;
 using Projectiles;
 using Visualizers;
 using Player;
@@ -11,5 +12,6 @@ namespace Core.Assets
         public Doors GetDoors();
         public Projection GetProjection();
         public Projectile GetProjectile();
+        public Obstacle GetObstacle();
     }
 }

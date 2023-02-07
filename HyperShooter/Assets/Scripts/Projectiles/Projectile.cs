@@ -26,7 +26,8 @@ namespace Projectiles
         {
             _movement = new ProjectileMovement(transform, data.MoveSpeed);
             _scale = new ScaleController(modelTransform, data.MinScale, data.InitialScale);
-            
+
+            collision.DisableDetection();
             collision.OnHitInfectable += OnHitInfectable;
             collision.OnHitDoors += (position) => ProjectileMissed();
             
@@ -42,6 +43,7 @@ namespace Projectiles
             
             appearance.SetFlightAppearance();
             _movement.StartMovement(direction);
+            collision.EnableDetection();
         }
 
         private void ProjectileMissed()
@@ -59,7 +61,7 @@ namespace Projectiles
             foreach (Collider collider in hitColliders)
             {
                 if (collider.TryGetComponent(out IInfectable infectable))
-                    infectable.Infect();
+                    infectable.Infect(Data.InfectionDurationMilliseconds);
             }
             
             OnObstaclesInfected?.Invoke();

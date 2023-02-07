@@ -51,7 +51,7 @@ namespace Player
             float distance = direction.magnitude;
             
             if (distance > .1f)
-                _transform.position += direction * (_moveSpeed * Time.deltaTime);
+                _transform.position += direction.normalized * (_moveSpeed * Time.deltaTime);
             else
                 MovementDone();
             /*
@@ -78,6 +78,11 @@ namespace Player
             ServiceManager.Container.Single<ITickRunner>().Unsubscribe(this);
         }
 
+        public void UpdatePumpingPosition(float scaleStep)
+        {
+            _transform.position += Vector3.up * ((scaleStep / 2) * Time.deltaTime);
+        }
+
         public void MoveTowardsDoors()
         {
             _endPoint = GetEndPoint();
@@ -94,9 +99,10 @@ namespace Player
 
         private Vector3 GetEndPoint()
         {
-            bool hasObstacle = Physics.SphereCast(_transform.position, _mesh.localScale.x, _transform.forward, out var hit, 100, _layerMask);
-            var pos = hasObstacle ? hit.point : _doors.transform.position;
-
+            bool hasObstacle = Physics.SphereCast(_transform.position, _mesh.localScale.x / 2, _transform.forward, out var hit, 100, _layerMask);
+            
+            float targetZ =  hasObstacle ? hit.point.z : _doors.transform.position.z;
+            var pos = new Vector3(_transform.position.x, _transform.position.y, targetZ);
             pos += (_transform.position - pos).normalized * _targetPositionOffset;
 
             return pos;

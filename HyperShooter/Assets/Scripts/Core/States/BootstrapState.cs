@@ -44,8 +44,10 @@ namespace Core.States
             ServiceManager.Container.RegisterSingle<IInput>(new InputController());
             ServiceManager.Container.RegisterSingle<ISceneLoader>(_sceneLoader);
             ServiceManager.Container.RegisterSingle<IAssetsDatabase>(_assetsDatabase);
-            ServiceManager.Container.RegisterSingle<IAssetsProvider>(new AssetsProvider(ServiceManager.Container.Single<IAssetsDatabase>()));
-            ServiceManager.Container.RegisterSingle<IGameFactory>(new GameFactory(ServiceManager.Container.Single<IAssetsProvider>()));
+            ServiceManager.Container.RegisterSingle<IAssetsProvider>(new AssetsProvider(
+                ServiceManager.Container.Single<IAssetsDatabase>()));
+            ServiceManager.Container.RegisterSingle<IGameFactory>(new GameFactory(
+                ServiceManager.Container.Single<IAssetsProvider>()));
         }
         
         private void EnterLoadLevel()

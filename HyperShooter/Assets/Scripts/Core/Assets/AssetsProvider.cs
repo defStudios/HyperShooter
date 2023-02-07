@@ -1,6 +1,8 @@
+using Core.Pools;
 using UnityEngine;
 using Visualizers;
 using Projectiles;
+using Obstacles;
 using Player;
 
 namespace Core.Assets
@@ -8,10 +10,12 @@ namespace Core.Assets
     public class AssetsProvider : IAssetsProvider
     {
         private readonly IAssetsDatabase _database;
-        
+        private readonly ObjectPool<Obstacle> _obstaclesPool;
+
         public AssetsProvider(IAssetsDatabase database)
         {
             _database = database;
+            _obstaclesPool = new ObjectPool<Obstacle>(database.Obstacle, 100);
         }
 
         public PlayerController GetPlayer()
@@ -32,6 +36,11 @@ namespace Core.Assets
         public Projectile GetProjectile()
         {
             return Object.Instantiate(_database.Projectile);
+        }
+
+        public Obstacle GetObstacle()
+        {
+            return _obstaclesPool.GetInstance();
         }
     }
 }
