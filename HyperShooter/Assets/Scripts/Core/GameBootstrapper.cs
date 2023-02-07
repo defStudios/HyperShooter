@@ -16,6 +16,10 @@ namespace Core
         
         private void Start()
         {
+            #if !UNITY_EDITOR
+            Application.targetFrameRate = 60;
+            #endif
+            
             _game = new Game(this, this, this, assetsDatabase);
             DontDestroyOnLoad(gameObject);
         }
